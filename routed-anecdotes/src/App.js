@@ -1,37 +1,40 @@
 import React from 'react'
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
+  Route, Link, Redirect
 } from 'react-router-dom'
 
 const Menu = () => (
-
-  <router>
-    <div>
-      <Link to="/">anecdotes</Link>&nbsp;
+  <div>
+    <Link to="/">anecdotes</Link>&nbsp;
     <Link to="/create">create new</Link>&nbsp;
     <Link to="/about">about</Link>&nbsp;
     </div>
-  </router>
 )
+
+const Notification = (props) => {
+  return (
+    <div >
+      {props.notification.text}
+    </div >
+  )
+}
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <router>
-      <ul>
-        {anecdotes.map(anecdote => <li key={anecdote.id} ><Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
-      </ul>
-    </router>
+    <ul>
+      {anecdotes.map(anecdote => <li key={anecdote.id} ><Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
+    </ul>
   </div>
 )
 
 const Anecdote = ({ anecdote }) =>
   (
     <div>
-      <h2>{anecdote.content}</h2>
-      <div>{anecdote.autor}</div>
-      <div><a href={anecdote.info}>{anecdote.info}</a></div>
+      <h2>{anecdote.content} by {anecdote.autor}</h2>
+      <div>has {anecdote.votes} votes</div>
+      <div>more info: <a href={anecdote.info}>{anecdote.info}</a></div>
     </div >
   )
 
@@ -60,12 +63,14 @@ const Footer = () => (
 )
 
 class CreateNew extends React.Component {
+
   constructor() {
     super()
     this.state = {
       content: '',
       author: '',
-      info: ''
+      info: '',
+      toHome: false
     }
   }
 
@@ -82,9 +87,14 @@ class CreateNew extends React.Component {
       info: this.state.info,
       votes: 0
     })
+    this.setState({ toHome: true })
+    this.props.setNotification('new anecdote created: ' + this.state.content)
   }
 
   render() {
+    if (this.state.toHome === true) {
+      return <Redirect to='/' />
+    }
     return (
       <div>
         <h2>create a new anecdote</h2>
@@ -130,8 +140,16 @@ class App extends React.Component {
           id: '2'
         }
       ],
-      notification: ''
+      notification: '',
     }
+  }
+
+  setNotification = (text) => {
+    this.setState({ notification: { text } })
+    setTimeout(() => {
+      this.setState({ notification: '' })
+    }, 10000)
+
   }
 
 
@@ -163,12 +181,14 @@ class App extends React.Component {
       <div>
         <Router>
           <div>
+            <Notification notification={this.state.notification} />
+
             <h1>Software anecdotes</h1>
             <div></div>
             <Menu />
             <Route exact path="/" render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
             <Route exact path="/about" render={() => <About />} />
-            <Route path="/create" render={() => <CreateNew addNew={this.addNew} />} />
+            <Route path="/create" render={() => <CreateNew addNew={this.addNew} setNotification={this.setNotification} />} />
             <Route exact path="/anecdotes/:id" render={({ match }) => <Anecdote anecdote={this.state.anecdotes.find(a => a.id === match.params.id)} />
             } />
 
