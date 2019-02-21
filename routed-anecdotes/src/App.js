@@ -18,11 +18,23 @@ const Menu = () => (
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
-    </ul>
+    <router>
+      <ul>
+        {anecdotes.map(anecdote => <li key={anecdote.id} ><Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
+      </ul>
+    </router>
   </div>
 )
+
+const Anecdote = ({ anecdote }) =>
+  (
+    <div>
+      <h2>{anecdote.content}</h2>
+      <div>{anecdote.autor}</div>
+      <div><a href={anecdote.info}>{anecdote.info}</a></div>
+    </div >
+  )
+
 
 const About = () => (
   <div>
@@ -40,6 +52,7 @@ const About = () => (
 
 const Footer = () => (
   <div>
+    <p></p>
     Anecdote app for <a href='https://courses.helsinki.fi/fi/TKT21009/121540749'>Full Stack -sovelluskehitys</a>.
 
     See <a href='https://github.com/mluukkai/routed-anecdotes'>https://github.com/mluukkai/routed-anecdotes</a> for the source code.
@@ -121,6 +134,7 @@ class App extends React.Component {
     }
   }
 
+
   addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     this.setState({ anecdotes: this.state.anecdotes.concat(anecdote) })
@@ -150,10 +164,13 @@ class App extends React.Component {
         <Router>
           <div>
             <h1>Software anecdotes</h1>
+            <div></div>
             <Menu />
             <Route exact path="/" render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
             <Route exact path="/about" render={() => <About />} />
             <Route path="/create" render={() => <CreateNew addNew={this.addNew} />} />
+            <Route exact path="/anecdotes/:id" render={({ match }) => <Anecdote anecdote={this.state.anecdotes.find(a => a.id === match.params.id)} />
+            } />
 
           </div>
         </Router>
