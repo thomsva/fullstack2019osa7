@@ -8,13 +8,17 @@ import Notification from './components/Notification'
 import { useField } from './hooks/useField'
 import { connect } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 
 const App = (props) => {
 
-  const [blogs, setBlogs] = useState([])
   const username = useField('text')
   const password = useField('password')
   const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    props.initializeBlogs()
+  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
@@ -25,11 +29,6 @@ const App = (props) => {
     }
   }, [])
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -74,10 +73,11 @@ const App = (props) => {
         <div>{user.name} logged in</div>
         <button onClick={handleLogout}>log out</button>
       </div>
-      <BlogForm blogs={blogs} setBlogs={setBlogs} />
-      <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
+      <BlogForm />
+      <BlogList user={user} />
+
     </div>
   )
 }
 
-export default connect(null, { setNotification })(App)
+export default connect(null, { initializeBlogs, setNotification })(App)

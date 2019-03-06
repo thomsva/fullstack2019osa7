@@ -1,41 +1,30 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 import Togglable from './Togglable'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
+import { createBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({ blogs, setBlogs, setNotification }) => {
+const BlogForm = (props) => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
 
-  const createBlog = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
     const blog = {
       'author': newAuthor,
       'title': newTitle,
       'url': newUrl
     }
-    blogService
-      .create(blog)
-      .then(response => {
-        setNewAuthor('')
-        setNewTitle('')
-        setNewUrl('')
-        setBlogs(blogs.concat(response))
-        console.log('created blog: ', blog)
-        setNotification('created anecdote: ' + blog.title, 3)
-      })
-      .catch(() => {
-        setNotification('Lisääminen epäonnistui', 3)
-      })
+    props.createBlog(blog)
+    props.setNotification(`Blog ${blog.title} created`, 3)
   }
+
 
   return (
     <Togglable buttonLabel="new blog">
       <h2>Luo uusi blogi</h2>
-      <form onSubmit={createBlog}>
+      <form onSubmit={handleSubmit}>
         <div>Author<input
           value={newAuthor}
           onChange={({ target }) => setNewAuthor(target.value)}
@@ -54,11 +43,8 @@ const BlogForm = ({ blogs, setBlogs, setNotification }) => {
   )
 }
 
-BlogForm.propTypes = {
-  blogs: PropTypes.array.isRequired,
-  setBlogs: PropTypes.func.isRequired
-}
+
 
 export default connect(
-  null, { setNotification }
+  null, { createBlog, setNotification }
 )(BlogForm)

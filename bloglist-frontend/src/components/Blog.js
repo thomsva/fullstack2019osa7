@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 import { connect } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
+import { removeBlog, likeIncrease } from '../reducers/blogReducer'
 
-const Blog = ({ blog, setBlogs, setNotification, user }) => {
+const Blog = ({ blog, removeBlog, likeIncrease, setNotification, user }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const extractUserName = (user) => {
@@ -16,41 +16,14 @@ const Blog = ({ blog, setBlogs, setNotification, user }) => {
   }
 
   const handleLike = () => {
-    blog.likes++
-    blogService
-      .update(blog)
-      .then((response) => {
-        console.log('response', response)
-      })
-      .then(() => {
-        blogService.getAll().then(blogs =>
-          setBlogs(blogs)
-        )
-        setNotification('tykkäys lisätty', 3)
-
-      })
-      .catch(() => {
-        setNotification('tykkäyksen lisääminen epäonnistui', 3)
-
-      })
+    likeIncrease(blog)
   }
 
   const handleRemove = () => {
     if (window.confirm('remove blog ' + blog.title + ' by ' + blog.author + '?')) {
-      blogService
-        .remove(blog.id)
-        .then((response) => {
-          console.log('response', response)
-        })
-        .then(() => {
-          blogService.getAll().then(blogs =>
-            setBlogs(blogs)
-          )
-          setNotification('poistaminen onnistui', 3)
-        })
-        .catch(() => {
-          setNotification('blogin poistaminen epäonnistui', 3)
-        })
+      console.log('remove id', blog.id)
+      removeBlog(blog.id)
+      setNotification('Blog removed', 3)
     }
   }
 
@@ -71,5 +44,7 @@ const Blog = ({ blog, setBlogs, setNotification, user }) => {
 }
 
 export default connect(
-  null, { setNotification }
+  null, { removeBlog, setNotification, likeIncrease }
 )(Blog)
+
+
