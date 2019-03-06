@@ -6,15 +6,15 @@ import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import { useField } from './hooks/useField'
+import { connect } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 
-const App = () => {
+const App = (props) => {
 
   const [blogs, setBlogs] = useState([])
   const username = useField('text')
   const password = useField('password')
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
-  const [notificationType, setNotificationType] = useState('info')
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
@@ -41,34 +41,22 @@ const App = () => {
       setUser(user)
       username.reset()
       password.reset()
-      setNotification('tervetuloa käyttäjä ' + user.name)
-      setNotificationType('info')
-      setTimeout(() => {
-        setNotification(null)
-      }, 2000)
+      props.setNotification('tervetuloa käyttäjä ' + user.name, 3)
     } catch (exception) {
-      setNotification('väärä käyttäjänimi tai salasana')
-      setNotificationType('error')
-      setTimeout(() => {
-        setNotification(null)
-      }, 2000)
+      props.setNotification('väärä käyttäjänimi tai salasana', 3)
     }
   }
 
-
   const handleLogout = () => {
     window.localStorage.removeItem('loggedInUser')
-    setNotification('käyttäjä ' + user.name + ' kirjautui ulos')
-    setNotificationType('info')
-    setTimeout(() => {
-      setNotification(null)
-    }, 2000)
     setUser(null)
+    props.setNotification('käyttäjä ' + user.name + ' kirjautui ulos', 3)
   }
 
   if (user === null) {
     return (
-      <div><Notification message={notification} type={notificationType} />
+      <div>
+        <Notification />
         <LoginForm
           username={username}
           password={password}
@@ -86,10 +74,10 @@ const App = () => {
         <div>{user.name} logged in</div>
         <button onClick={handleLogout}>log out</button>
       </div>
-      <BlogForm blogs={blogs} setBlogs={setBlogs} setNotification={setNotification} setNotificationType={setNotificationType} />
-      <BlogList blogs={blogs} setBlogs={setBlogs} setNotification={setNotification} setNotificationType={setNotificationType} user={user} />
+      <BlogForm blogs={blogs} setBlogs={setBlogs} />
+      <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
     </div>
   )
 }
 
-export default App
+export default connect(null, { setNotification })(App)

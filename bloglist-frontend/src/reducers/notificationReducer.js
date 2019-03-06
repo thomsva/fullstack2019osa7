@@ -13,7 +13,6 @@ const notificationReducer = (state = initialState, action) => {
 
 export const setNotification = (text, seconds) => {
   return async dispatch => {
-    console.log('actioncreator')
     dispatch({
       type: 'SET_NOTIFICATION',
       text: text

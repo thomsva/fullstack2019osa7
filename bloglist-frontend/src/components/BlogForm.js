@@ -24,7 +24,7 @@ const BlogForm = ({ blogs, setBlogs, setNotification }) => {
         setNewTitle('')
         setNewUrl('')
         setBlogs(blogs.concat(response))
-        console.log('ploki: ', blog)
+        console.log('created blog: ', blog)
         setNotification('created anecdote: ' + blog.title, 3)
       })
       .catch(() => {
