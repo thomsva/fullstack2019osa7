@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
+import { connect } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ blog, setBlogs, setNotification, setNotificationType, user }) => {
+const Blog = ({ blog, setBlogs, setNotification, user }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const extractUserName = (user) => {
@@ -24,18 +26,12 @@ const Blog = ({ blog, setBlogs, setNotification, setNotificationType, user }) =>
         blogService.getAll().then(blogs =>
           setBlogs(blogs)
         )
-        setNotification('tykkäys lisätty')
-        setNotificationType('info')
-        setTimeout(() => {
-          setNotification(null)
-        }, 2000)
+        setNotification('tykkäys lisätty', 3)
+
       })
       .catch(() => {
-        setNotification('tykkäyksen lisääminen epäonnistui')
-        setNotificationType('error')
-        setTimeout(() => {
-          setNotification(null)
-        }, 2000)
+        setNotification('tykkäyksen lisääminen epäonnistui', 3)
+
       })
   }
 
@@ -50,18 +46,10 @@ const Blog = ({ blog, setBlogs, setNotification, setNotificationType, user }) =>
           blogService.getAll().then(blogs =>
             setBlogs(blogs)
           )
-          setNotification('poistaminen onnistui')
-          setNotificationType('info')
-          setTimeout(() => {
-            setNotification(null)
-          }, 2000)
+          setNotification('poistaminen onnistui', 3)
         })
         .catch(() => {
-          setNotification('blogin poistaminen epäonnistui')
-          setNotificationType('error')
-          setTimeout(() => {
-            setNotification(null)
-          }, 2000)
+          setNotification('blogin poistaminen epäonnistui', 3)
         })
     }
   }
@@ -82,4 +70,6 @@ const Blog = ({ blog, setBlogs, setNotification, setNotificationType, user }) =>
   )
 }
 
-export default Blog
+export default connect(
+  null, { setNotification }
+)(Blog)
