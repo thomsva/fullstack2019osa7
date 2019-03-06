@@ -18,6 +18,9 @@ const BlogForm = (props) => {
     }
     props.createBlog(blog)
     props.setNotification(`Blog ${blog.title} created`, 3)
+    setNewAuthor('')
+    setNewTitle('')
+    setNewUrl('')
   }
 
 
