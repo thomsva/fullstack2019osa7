@@ -12,6 +12,7 @@ const BlogList = (props) => {
 
   return (
     <div>
+      <h2>List of blogs</h2>
       {props.blogs.map(blog =>
         <Blog key={blog.id} blog={blog} user={props.user} />
       )}

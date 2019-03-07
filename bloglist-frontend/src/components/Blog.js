@@ -32,7 +32,7 @@ const Blog = ({ blog, removeBlog, likeIncrease, setNotification, user }) => {
 
   return (
     <div className='blog'>
-      <div onClick={toggleShowDetails}><h2 className='title'>{blog.title} by {blog.author}</h2></div>
+      <div onClick={toggleShowDetails}><h3 className='title'>{blog.title} by {blog.author}</h3></div>
       <div style={details} className='details'>
         <div><a href={blog.url}>{blog.url}</a></div>
         <div>likes: {blog.likes} <button onClick={handleLike}>like</button> </div>

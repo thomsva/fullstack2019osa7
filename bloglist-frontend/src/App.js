@@ -5,14 +5,15 @@ import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import UserList from './components/UserList'
 import { useField } from './hooks/useField'
 import { connect } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
-import { setUser, clearUser } from './reducers/userReducer'
+import { setUserLoggedIn, clearUserLoggedIn, initializeUsers } from './reducers/userReducer'
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
 
 const App = (props) => {
-
   const username = useField('text')
   const password = useField('password')
 
@@ -21,10 +22,14 @@ const App = (props) => {
   }, [])
 
   useEffect(() => {
+    props.initializeUsers()
+  }, [])
+
+  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      props.setUser(user)
+      props.setUserLoggedIn(user)
       blogService.setToken(user.token)
     }
   }, [])
@@ -37,7 +42,7 @@ const App = (props) => {
       const user = await loginService.login(credentials)
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
-      props.setUser(user)
+      props.setUserLoggedIn(user)
       username.reset()
       password.reset()
       props.setNotification('tervetuloa käyttäjä ' + user.name, 3)
@@ -52,7 +57,7 @@ const App = (props) => {
     props.setNotification('käyttäjä ' + props.user.name + ' kirjautui ulos', 3)
   }
 
-  if (props.user === null) {
+  if (props.userLoggedIn === null) {
     return (
       <div>
         <Notification />
@@ -66,22 +71,35 @@ const App = (props) => {
   }
 
   return (
-    <div>
-      <Notification />
+
+    <Router>
       <div>
-        <h2>blogs</h2>
-        <div>{props.user.name} logged in</div>
-        <button onClick={handleLogout}>log out</button>
+        <Notification />
+        <h1>BLOGS</h1>
+        <Route exact path="/" render={() =>
+          <div>
+
+            <div>{props.userLoggedIn.name} logged in</div>
+            <button onClick={handleLogout}>log out</button>
+            <BlogForm />
+            <BlogList user={props.userLoggedIn} />
+          </div>
+        } />
+        <Route exact path="/users" render={() =>
+
+          <UserList />
+        } />
+
+
       </div>
-      <BlogForm />
-      <BlogList user={props.user} />
-    </div>
+    </Router>
+
   )
 }
 
 
 const mapStateToProps = (state) => {
-  return { user: state.user.user }
+  return { userLoggedIn: state.users.userLoggedIn }
 }
 
-export default connect(mapStateToProps, { initializeBlogs, setNotification, setUser, clearUser })(App)
+export default connect(mapStateToProps, { initializeBlogs, setNotification, setUserLoggedIn, clearUserLoggedIn, initializeUsers })(App)
