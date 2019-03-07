@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'reac
 
 
 const Blog = (props) => {
-
+  console.log('Blog props', props)
   if (props.blog == null) return (<div>empty</div>)
 
   const [redirect, setRedirect] = useState(null)
@@ -45,6 +45,13 @@ const Blog = (props) => {
       <div>likes: {props.blog.likes} <button onClick={handleLike}>like</button> </div>
       <div>added by {extractUserName(props.blog.user)}</div>
       <button onClick={handleRemove} style={showForOwner}>remove</button>
+
+      <h4>Comments</h4>
+      <ul>
+        {props.blog.comments.map((c, i) =>
+          <li key={i}>{c}</li>
+        )}
+      </ul>
 
     </div >
   )
