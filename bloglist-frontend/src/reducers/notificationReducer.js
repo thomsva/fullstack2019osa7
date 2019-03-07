@@ -26,18 +26,5 @@ export const setNotification = (text, seconds) => {
   }
 }
 
-export const notificationChange = text => {
-  return {
-    type: 'SET_NOTIFICATION',
-    text: text
-  }
-}
-
-export const notificationRemove = text => {
-  return {
-    type: 'REMOVE_NOTIFICATION',
-    text: text
-  }
-}
 
 export default notificationReducer

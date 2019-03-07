@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
@@ -9,12 +9,12 @@ import { useField } from './hooks/useField'
 import { connect } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
+import { setUser, clearUser } from './reducers/userReducer'
 
 const App = (props) => {
 
   const username = useField('text')
   const password = useField('password')
-  const [user, setUser] = useState(null)
 
   useEffect(() => {
     props.initializeBlogs()
@@ -24,7 +24,7 @@ const App = (props) => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      props.setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
@@ -37,7 +37,7 @@ const App = (props) => {
       const user = await loginService.login(credentials)
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
-      setUser(user)
+      props.setUser(user)
       username.reset()
       password.reset()
       props.setNotification('tervetuloa käyttäjä ' + user.name, 3)
@@ -48,11 +48,11 @@ const App = (props) => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedInUser')
-    setUser(null)
-    props.setNotification('käyttäjä ' + user.name + ' kirjautui ulos', 3)
+    props.clearUser()
+    props.setNotification('käyttäjä ' + props.user.name + ' kirjautui ulos', 3)
   }
 
-  if (user === null) {
+  if (props.user === null) {
     return (
       <div>
         <Notification />
@@ -70,14 +70,18 @@ const App = (props) => {
       <Notification />
       <div>
         <h2>blogs</h2>
-        <div>{user.name} logged in</div>
+        <div>{props.user.name} logged in</div>
         <button onClick={handleLogout}>log out</button>
       </div>
       <BlogForm />
-      <BlogList user={user} />
-
+      <BlogList user={props.user} />
     </div>
   )
 }
 
-export default connect(null, { initializeBlogs, setNotification })(App)
+
+const mapStateToProps = (state) => {
+  return { user: state.user.user }
+}
+
+export default connect(mapStateToProps, { initializeBlogs, setNotification, setUser, clearUser })(App)
