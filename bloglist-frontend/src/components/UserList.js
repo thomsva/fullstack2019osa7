@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
 
 const UserList = (props) => {
 
@@ -10,7 +11,9 @@ const UserList = (props) => {
       <h2>List of users</h2>
       <ul>
         {props.users.users.map(u =>
-          <li key={u.id}>{u.name} ({u.blogs.length} blogs)</li>
+          <li key={u.id}>
+            <Link to={`/users/${u.id}`}>{u.name}</Link> ({u.blogs.length} blogs)
+          </li>
         )}
       </ul>
 
