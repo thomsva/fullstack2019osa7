@@ -55,9 +55,10 @@ const App = (props) => {
   }
 
   const handleLogout = () => {
+    const u = props.userLoggedIn.name
     window.localStorage.removeItem('loggedInUser')
-    props.clearUser()
-    props.setNotification('käyttäjä ' + props.user.name + ' kirjautui ulos', 3)
+    props.clearUserLoggedIn()
+    props.setNotification('käyttäjä ' + u + ' kirjautui ulos', 3)
   }
 
   if (props.userLoggedIn === null) {

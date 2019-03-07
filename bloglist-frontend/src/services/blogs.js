@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-const baseUrl = '/api/blogs'
+const baseUrl = 'http://localhost:3003/api/blogs'
 
 let token = null
 
@@ -27,6 +27,17 @@ const update = async (newObject) => {
   return response
 }
 
+const addComment = async (id, comment) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  console.log('eka')
+  const response = await axios.post(`${baseUrl}/${id}/comments`, { comment }, config)
+  console.log('toka')
+  return response
+}
+
+
 const remove = async (id) => {
   const config = {
     headers: { Authorization: token },
@@ -36,4 +47,4 @@ const remove = async (id) => {
 }
 
 
-export default { getAll, setToken, create, update, remove }
+export default { getAll, setToken, create, update, remove, addComment }

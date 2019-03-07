@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
-import { removeBlog, likeIncrease } from '../reducers/blogReducer'
+import { removeBlog, likeIncrease, addComment } from '../reducers/blogReducer'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
 
 
@@ -29,6 +29,14 @@ const Blog = (props) => {
     }
   }
 
+  const addComment = async (event) => {
+    event.preventDefault()
+    const content = event.target.comment.value
+    props.addComment(props.blog.id, content)
+    event.target.comment.value = ''
+    props.setNotification('kommentti lisättiin', 3)
+  }
+
   const showForOwner = { display: (props.blog.user.name === props.userLoggedIn.name) ? '' : 'none' }
 
 
@@ -47,6 +55,10 @@ const Blog = (props) => {
       <button onClick={handleRemove} style={showForOwner}>remove</button>
 
       <h4>Comments</h4>
+      <form onSubmit={addComment}>
+        <input name="comment" />
+        <button type="submit">lisää kommentti</button>
+      </form>
       <ul>
         {props.blog.comments.map((c, i) =>
           <li key={i}>{c}</li>
@@ -62,7 +74,7 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(
-  mapStateToProps, { removeBlog, setNotification, likeIncrease }
+  mapStateToProps, { removeBlog, setNotification, likeIncrease, addComment }
 )(Blog)
 
 

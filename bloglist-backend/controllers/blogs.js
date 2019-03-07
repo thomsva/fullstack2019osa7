@@ -45,7 +45,7 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 
 blogsRouter.post('/:id/comments', async (request, response, next) => {
-
+  console.log('r params', request.params)
   try {
     const blog = await Blog.findById(request.params.id)
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
@@ -88,7 +88,8 @@ blogsRouter.put('/:id', async (request, response, next) => {
     title: request.body.title,
     author: request.body.author,
     url: request.body.url,
-    likes: request.body.likes
+    likes: request.body.likes,
+    comments: request.body.comments
   }
   try {
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
