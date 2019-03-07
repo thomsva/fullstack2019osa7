@@ -44,6 +44,24 @@ blogsRouter.post('/', async (request, response, next) => {
   }
 })
 
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+
+  try {
+    const blog = await Blog.findById(request.params.id)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    if (blog == null) {
+      return response.status(404).json({ error: 'not found' })
+    }
+    const b = await Blog.findByIdAndUpdate(request.params.id, { comments: blog.comments.concat(request.body.comment) }, { new: true })
+    response.status(200).json(b);
+  } catch (exception) {
+    next(exception)
+  }
+})
+
 blogsRouter.delete('/:id', async (request, response, next) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
