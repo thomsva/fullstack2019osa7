@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { removeBlog, likeIncrease, addComment } from '../reducers/blogReducer'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
-
+import { Form, Button } from 'react-bootstrap'
 
 const Blog = (props) => {
   console.log('Blog props', props)
@@ -50,21 +50,20 @@ const Blog = (props) => {
       <h3 className='title'>{props.blog.title} by {props.blog.author}</h3>
 
       <div><a href={props.blog.url}>{props.blog.url}</a></div>
-      <div>likes: {props.blog.likes} <button onClick={handleLike}>like</button> </div>
+      <div>likes: {props.blog.likes} <Button variant="btn btn-dark" onClick={handleLike}>like</Button> </div>
       <div>added by {extractUserName(props.blog.user)}</div>
       <button onClick={handleRemove} style={showForOwner}>remove</button>
 
       <h4>Comments</h4>
-      <form onSubmit={addComment}>
-        <input name="comment" />
-        <button type="submit">lisää kommentti</button>
-      </form>
-      <ul>
+      <Form onSubmit={addComment}>
+        <Form.Control name="comment" />
+        <Button variant="btn btn-dark" type="submit">lisää kommentti</Button>
+      </Form>
+      <ul class="list-group">
         {props.blog.comments.map((c, i) =>
-          <li key={i}>{c}</li>
+          <li class="list-group-item list-group-item-light" key={i}>{c}</li>
         )}
       </ul>
-
     </div >
   )
 }

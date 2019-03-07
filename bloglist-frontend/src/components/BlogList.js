@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
+import { Badge } from 'react-bootstrap'
 
 const BlogList = (props) => {
   console.log('props:', props)
@@ -14,9 +15,12 @@ const BlogList = (props) => {
     <div>
       <h2>List of blogs</h2>
 
-      <ul>
+      <ul class="list-group">
         {props.blogs.map(blog =>
-          <li key={blog.id}><Link to={`/blogs/${blog.id}`}>{blog.title}</Link> by {blog.author}</li>
+          <a href={`/blogs/${blog.id}`} class="list-group-item list-group-item-action list-group-item-light" key={blog.id}>
+            {blog.title} by {blog.author}
+            <Badge variant="secondary text-right ml-1">{blog.likes} likes</Badge>
+          </a>
         )}
       </ul>
 

@@ -9,11 +9,11 @@ const UserList = (props) => {
   return (
     <div>
       <h2>List of users</h2>
-      <ul>
+      <ul class="list-group">
         {props.users.users.map(u =>
-          <li key={u.id}>
-            <Link to={`/users/${u.id}`}>{u.name}</Link> ({u.blogs.length} blogs)
-          </li>
+          <a href={`/users/${u.id}`} class="list-group-item list-group-item-action list-group-item-light" key={u.id}>
+            {u.name} ({u.blogs.length} blogs)
+          </a>
         )}
       </ul>
 

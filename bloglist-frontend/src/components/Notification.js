@@ -1,20 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import { Alert } from 'react-bootstrap'
 
 const Notification = (props) => {
   const notification = props.notification
 
-  var style = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 1
-  }
+  var style
   if (notification.text === null) {
     style = {
       display: 'none'
     }
   }
-  return (<div style={style}>{notification.text}</div>)
+  return (< Alert style={style} variant="dark">{notification.text}</Alert>)
 }
 
 const mapStateToProps = (state) => {

@@ -1,23 +1,24 @@
 import React from 'react'
+import { Form, Button } from 'react-bootstrap'
 
 const LoginForm = ({ handleSubmit, username, password }) => {
 
   return (
     <div>
       <h2>Log in to application</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          käyttäjätunnus
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label>käyttäjätunnus</Form.Label>
+          <Form.Control {...username.bind} />
+          <Form.Label>salasana</Form.Label>
+          <Form.Control {...password.bind} />
+        </Form.Group>
+        <Form.Group>
+          <Button variant="dark" type="submit">kirjaudu</Button>
+        </Form.Group>
 
-          <input {...username.bind} />
 
-        </div>
-        <div>
-          salasana
-          <input {...password.bind} />
-        </div>
-        <button type="submit">kirjaudu</button>
-      </form>
+      </Form>
     </div>
   )
 }

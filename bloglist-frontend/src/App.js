@@ -15,6 +15,7 @@ import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUserLoggedIn, clearUserLoggedIn, initializeUsers } from './reducers/userReducer'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
+import { Button, Container, Row, Col } from 'react-bootstrap'
 
 const App = (props) => {
   const username = useField('text')
@@ -63,7 +64,7 @@ const App = (props) => {
 
   if (props.userLoggedIn === null) {
     return (
-      <div>
+      <div className="container">
         <Notification />
         <LoginForm
           username={username}
@@ -80,29 +81,34 @@ const App = (props) => {
   return (
 
     <Router>
-      <div>
+      <div className="container">
+
         <Notification />
+        <Container>
+          <Row>
+            <Col><h1>BLOGS</h1></Col>
+            <Col><div class="text-right">{props.userLoggedIn.name} logged in &nbsp;
+              <Button variant="dark" onClick={handleLogout}>log out</Button></div></Col>
+          </Row>
+        </Container>
         <Navigation />
-
-        <h1>BLOGS</h1>
-        <div>{props.userLoggedIn.name} logged in</div>
-        <button onClick={handleLogout}>log out</button>
-
-        <Route exact path="/" render={() =>
-          <div>
-            <BlogForm />
-            <BlogList user={props.userLoggedIn} />
-          </div>
-        } />
-        <Route exact path="/users" render={() =>
-          <UserList />
-        } />
-        <Route exact path="/users/:id" render={({ match }) =>
-          <User user={userById(match.params.id)} />
-        } />
-        <Route exact path="/blogs/:id" render={({ match }) =>
-          <Blog blog={blogById(match.params.id)} />
-        } />
+        <Container className="mt-3">
+          <Route exact path="/" render={() =>
+            <div>
+              <BlogForm />
+              <BlogList user={props.userLoggedIn} />
+            </div>
+          } />
+          <Route exact path="/users" render={() =>
+            <UserList />
+          } />
+          <Route exact path="/users/:id" render={({ match }) =>
+            <User user={userById(match.params.id)} />
+          } />
+          <Route exact path="/blogs/:id" render={({ match }) =>
+            <Blog blog={blogById(match.params.id)} />
+          } />
+        </Container>
 
 
       </div>

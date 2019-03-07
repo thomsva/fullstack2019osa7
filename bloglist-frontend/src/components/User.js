@@ -9,9 +9,9 @@ const User = (props) => {
     <div>
       <h2>User {props.user.name}</h2>
       <h3>Added blogs:</h3>
-      <ul>
+      <ul class="list-group">
         {props.user.blogs.map(b =>
-          <li key={b.id}>
+          <li class="list-group-item list-group-item-light" key={b.id}>
             {b.title}
           </li>
         )}
