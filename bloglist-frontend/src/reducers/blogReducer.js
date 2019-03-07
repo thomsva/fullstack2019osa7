@@ -5,20 +5,21 @@ const blogReducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
-    case 'LIKE_INCREASE':
+    case 'LIKE_INCREASE': {
       const id = action.data.blog.id
       const blogToChange = state.find(b => b.id === id)
       const changedBlog = { ...blogToChange, likes: action.data.blog.likes }
       return state
         .map(blog => blog.id !== id ? blog : changedBlog)
         .sort((a1, a2) => (a2.likes - a1.likes))
-    case 'ADD_COMMENT':
-
+    }
+    case 'ADD_COMMENT': {
       const blogToChange1 = state.find(b => b.id === action.data.blog.id)
       const changedBlog1 = { ...blogToChange1, comments: action.data.blog.comments }
       return state
         .map(blog => blog.id !== action.data.blog.id ? blog : changedBlog1)
         .sort((a1, a2) => (a2.likes - a1.likes))
+    }
     case 'REMOVE_BLOG':
       return state.filter(b => b.id !== action.data.id)
     case 'NEW_BLOG':

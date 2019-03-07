@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { removeBlog, likeIncrease, addComment } from '../reducers/blogReducer'
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 
 const Blog = (props) => {
   console.log('Blog props', props)
-  if (props.blog == null) return (<div>empty</div>)
+  if (props.blog === null) return (<div>empty</div>)
 
   const [redirect, setRedirect] = useState(null)
 
@@ -59,9 +59,9 @@ const Blog = (props) => {
         <Form.Control name="comment" />
         <Button variant="btn btn-dark" type="submit">lisää kommentti</Button>
       </Form>
-      <ul class="list-group">
+      <ul className="list-group">
         {props.blog.comments.map((c, i) =>
-          <li class="list-group-item list-group-item-light" key={i}>{c}</li>
+          <li className="list-group-item list-group-item-light" key={i}>{c}</li>
         )}
       </ul>
     </div >

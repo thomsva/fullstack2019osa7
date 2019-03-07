@@ -1,4 +1,7 @@
 module.exports = {
+  "settings": {
+    "react": { "version": "detect" }
+  },
   "env": {
     "browser": true,
     "es6": true,
@@ -19,10 +22,7 @@ module.exports = {
     "react", "jest"
   ],
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "linebreak-style": 0,
     "quotes": [
       "error",

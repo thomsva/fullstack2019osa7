@@ -1,13 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
 import { Badge } from 'react-bootstrap'
 
 const BlogList = (props) => {
   console.log('props:', props)
 
 
-  if (props.blogs == null) return (<div>empty</div>)
+  if (props.blogs === null) return (<div>empty</div>)
 
   props.blogs.sort((blog1, blog2) => (blog2.likes - blog1.likes))
 
@@ -15,9 +14,9 @@ const BlogList = (props) => {
     <div>
       <h2>List of blogs</h2>
 
-      <ul class="list-group">
+      <ul className="list-group">
         {props.blogs.map(blog =>
-          <a href={`/blogs/${blog.id}`} class="list-group-item list-group-item-action list-group-item-light" key={blog.id}>
+          <a href={`/blogs/${blog.id}`} className="list-group-item list-group-item-action list-group-item-light" key={blog.id}>
             {blog.title} by {blog.author}
             <Badge variant="secondary text-right ml-1">{blog.likes} likes</Badge>
           </a>
@@ -26,10 +25,7 @@ const BlogList = (props) => {
 
     </div>
   )
-
 }
-
-
 
 const mapStateToProps = (state) => {
   return { blogs: state.blogs }

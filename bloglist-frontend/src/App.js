@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUserLoggedIn, clearUserLoggedIn, initializeUsers } from './reducers/userReducer'
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Button, Container, Row, Col } from 'react-bootstrap'
 
 const App = (props) => {
@@ -87,7 +87,7 @@ const App = (props) => {
         <Container>
           <Row>
             <Col><h1>BLOGS</h1></Col>
-            <Col><div class="text-right">{props.userLoggedIn.name} logged in &nbsp;
+            <Col><div className="text-right">{props.userLoggedIn.name} logged in &nbsp;
               <Button variant="dark" onClick={handleLogout}>log out</Button></div></Col>
           </Row>
         </Container>
