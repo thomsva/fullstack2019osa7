@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { removeBlog, likeIncrease } from '../reducers/blogReducer'
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
+
 
 const Blog = (props) => {
 
   if (props.blog == null) return (<div>empty</div>)
 
+  const [redirect, setRedirect] = useState(null)
 
   const extractUserName = (user) => {
     if (user === null) return 'unknown'
@@ -22,10 +25,16 @@ const Blog = (props) => {
       console.log('remove id', props.blog.id)
       props.removeBlog(props.blog.id)
       props.setNotification('Blog removed', 3)
+      setRedirect('/')
     }
   }
 
   const showForOwner = { display: (props.blog.user.name === props.userLoggedIn.name) ? '' : 'none' }
+
+
+  if (redirect !== null) {
+    return <Redirect to={redirect} />
+  }
 
   return (
     <div>
