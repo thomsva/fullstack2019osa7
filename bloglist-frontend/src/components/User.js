@@ -2,7 +2,6 @@ import React from 'react'
 
 
 const User = (props) => {
-  console.log('pprop', props)
 
   if (props.user == null) return (<div>empty</div>)
 

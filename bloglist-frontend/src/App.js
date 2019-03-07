@@ -7,6 +7,7 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import UserList from './components/UserList'
 import User from './components/User'
+import Blog from './components/Blog'
 import { useField } from './hooks/useField'
 import { connect } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
@@ -15,7 +16,6 @@ import { setUserLoggedIn, clearUserLoggedIn, initializeUsers } from './reducers/
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
 
 const App = (props) => {
-  console.log('app props', props)
   const username = useField('text')
   const password = useField('password')
 
@@ -73,6 +73,7 @@ const App = (props) => {
   }
 
   const userById = (id) => props.users.find(u => u.id === id)
+  const blogById = (id) => props.blogs.find(b => b.id === id)
 
   return (
 
@@ -95,6 +96,9 @@ const App = (props) => {
         <Route exact path="/users/:id" render={({ match }) =>
           <User user={userById(match.params.id)} />
         } />
+        <Route exact path="/blogs/:id" render={({ match }) =>
+          <Blog blog={blogById(match.params.id)} />
+        } />
 
 
       </div>
@@ -105,7 +109,7 @@ const App = (props) => {
 
 
 const mapStateToProps = (state) => {
-  return { userLoggedIn: state.users.userLoggedIn, users: state.users.users }
+  return { userLoggedIn: state.users.userLoggedIn, users: state.users.users, blogs: state.blogs }
 }
 
 export default connect(mapStateToProps, { initializeBlogs, setNotification, setUserLoggedIn, clearUserLoggedIn, initializeUsers })(App)

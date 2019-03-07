@@ -1,6 +1,6 @@
 import React from 'react'
-import Blog from './Blog'
 import { connect } from 'react-redux'
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
 
 const BlogList = (props) => {
   console.log('props:', props)
@@ -13,9 +13,13 @@ const BlogList = (props) => {
   return (
     <div>
       <h2>List of blogs</h2>
-      {props.blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={props.user} />
-      )}
+
+      <ul>
+        {props.blogs.map(blog =>
+          <li key={blog.id}><Link to={`/blogs/${blog.id}`}>{blog.title}</Link> by {blog.author}</li>
+        )}
+      </ul>
+
     </div>
   )
 
