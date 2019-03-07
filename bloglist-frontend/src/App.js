@@ -8,6 +8,7 @@ import Notification from './components/Notification'
 import UserList from './components/UserList'
 import User from './components/User'
 import Blog from './components/Blog'
+import Navigation from './components/Navigation'
 import { useField } from './hooks/useField'
 import { connect } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
@@ -80,6 +81,8 @@ const App = (props) => {
     <Router>
       <div>
         <Notification />
+        <Navigation />
+
         <h1>BLOGS</h1>
         <div>{props.userLoggedIn.name} logged in</div>
         <button onClick={handleLogout}>log out</button>
