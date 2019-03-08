@@ -32,16 +32,19 @@ const BlogForm = (props) => {
         <Form.Group>
           <Form.Label>Author</Form.Label>
           <Form.Control
+            id='author'
             value={newAuthor}
             onChange={({ target }) => setNewAuthor(target.value)}
           />
           <Form.Label>Title</Form.Label>
           <Form.Control
+            id='title'
             value={newTitle}
             onChange={({ target }) => setNewTitle(target.value)}
           />
           <Form.Label>Url</Form.Label>
           <Form.Control
+            id='url'
             value={newUrl}
             onChange={({ target }) => setNewUrl(target.value)}
           />
