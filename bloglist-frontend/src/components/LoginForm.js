@@ -9,9 +9,9 @@ const LoginForm = ({ handleSubmit, username, password }) => {
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>käyttäjätunnus</Form.Label>
-          <Form.Control {...username.bind} />
+          <Form.Control id='username' {...username.bind} />
           <Form.Label>salasana</Form.Label>
-          <Form.Control {...password.bind} />
+          <Form.Control id='password' {...password.bind} />
         </Form.Group>
         <Form.Group>
           <Button variant="dark" type="submit">kirjaudu</Button>

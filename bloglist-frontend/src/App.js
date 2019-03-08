@@ -66,11 +66,14 @@ const App = (props) => {
     return (
       <div className="container">
         <Notification />
-        <LoginForm
-          username={username}
-          password={password}
-          handleSubmit={handleLogin}
-        />
+        <Container>
+          <h1>BLOGS</h1>
+          <LoginForm
+            username={username}
+            password={password}
+            handleSubmit={handleLogin}
+          />
+        </Container>
       </div>
     )
   }
