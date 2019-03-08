@@ -7,7 +7,7 @@ import { Form, Button } from 'react-bootstrap'
 
 const Blog = (props) => {
   console.log('Blog props', props)
-  if (props.blog === null) return (<div>empty</div>)
+  if (props.blog === undefined) return (<div>empty</div>)
 
   const [redirect, setRedirect] = useState(null)
 

@@ -57,6 +57,27 @@ describe('Blog app', function () {
         .click()
       cy.contains('Money Money Money')
     })
+
+    it('An added blog can be shown and liked', function () {
+
+      cy.contains('new blog')
+        .click()
+      cy.get('#author')
+        .type('Roope Ankka')
+      cy.get('#title')
+        .type('Money Money Money')
+      cy.get('#url')
+        .type('rich.com')
+      cy.contains('save')
+        .click()
+      cy.get('[data-cy=blog-list-element]').click()
+      cy.contains('added by Iines Hiiri')
+      cy.contains('likes: 0')
+      cy.contains('like').click()
+      cy.contains('like').click()
+      cy.contains('likes: 2')
+    })
+
   })
 })
 

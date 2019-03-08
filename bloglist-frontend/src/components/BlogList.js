@@ -16,7 +16,7 @@ const BlogList = (props) => {
 
       <ul className="list-group">
         {props.blogs.map(blog =>
-          <a href={`/blogs/${blog.id}`} className="list-group-item list-group-item-action list-group-item-light" key={blog.id}>
+          <a data-cy="blog-list-element" href={`/blogs/${blog.id}`} className="list-group-item list-group-item-action list-group-item-light" key={blog.id}>
             {blog.title} by {blog.author}
             <Badge variant="secondary text-right ml-1">{blog.likes} likes</Badge>
           </a>
